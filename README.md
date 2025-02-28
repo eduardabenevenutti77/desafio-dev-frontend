@@ -44,3 +44,4 @@ Você pode utilizar a API que seja mais conveniente para o resgate das informaç
 
 Este teste técnico foi baseado no seguinte desafio: 
 https://github.com/1STi/desafio-frontend/
+figma: https://www.figma.com/design/KM4mwCXbtYXdluUNO2STxy/manchester's-cloud?node-id=0-1&p=f&t=AqUa39kLDwlkiPC7-0
