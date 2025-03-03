@@ -1,11 +1,15 @@
 import './App.css'
 import "@fontsource/montserrat"
 import Footer from './components/Footer'
+import Search from './components/Search'
 
 function App() {
 
   return (
-    <Footer />
+    <>
+      <Search />
+      <Footer />
+    </>
   )
 }
 

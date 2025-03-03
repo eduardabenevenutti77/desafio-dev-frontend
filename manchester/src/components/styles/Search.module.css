@@ -1,0 +1,17 @@
+.input {
+    background-color: #D9D9D9;
+    width: 680px;
+    height: 30px;
+    border-radius: 6px;
+    border: none;
+    padding: 7px;
+}
+
+.error {
+    font-weight: 500;
+    color: rgb(245, 84, 84);
+}
+
+.sugestao {
+    color: #FFFFFF;
+}
