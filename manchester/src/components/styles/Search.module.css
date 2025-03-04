@@ -1,41 +1,74 @@
+.weatherSearchContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 15px; /* Espaço entre os elementos */
+    padding: 40px 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+    max-width: 700px;
+    margin: auto;
+    transition: background 0.3s ease; /* Transição suave */
+}
+
+/* Fundos para diferentes condições de temperatura */
+.weather-hot {
+    background: linear-gradient(135deg, #FF7E5F, #feb47b); /* Gradiente quente */
+}
+
+.weather-cold {
+    background: linear-gradient(135deg, #00c6ff, #0072ff); /* Gradiente frio */
+}
+
+.weather-mild {
+    background: linear-gradient(135deg, #1E3C72, #2A5298); /* Gradiente suave */
+}
+
 .input {
-    background-color: #D9D9D9;
-    width: 680px;
-    height: 30px;
-    border-radius: 6px;
+    background-color: rgba(255, 255, 255, 0.2);
+    width: 90%;
+    max-width: 680px;
+    height: 40px;
+    border-radius: 8px;
     border: none;
-    padding: 7px;
+    padding: 10px;
+    text-align: center;
+    font-size: 16px;
+    color: white;
+    outline: none;
+    transition: all 0.3s ease-in-out;
 }
 
-.error {
-    font-weight: 500;
-    color: rgb(245, 84, 84);
+.input::placeholder {
+    color: rgba(255, 255, 255, 0.6);
 }
 
-.sugestao {
-    color: #FFFFFF;
+.input:focus {
+    background-color: rgba(255, 255, 255, 0.3);
+    transform: scale(1.05);
 }
 
 .weatherInfo {
-    display: flex;
-    flex-direction: column;
+    margin-top: 20px;
+    text-align: center;
     width: 85%;
-    background-color: rgba(246, 246, 246, 0.6); 
-    margin-top: 30px;
-    border-radius: 10px;
-    border: none;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.2);
 }
 
-
-.weatherInfo h3 {
-    font-size: 20px;
-    font-weight: 800;
-    color: #FFFFFF;
-    background-color: transparent;
+/* Efeito de fade-in para a exibição dos dados do clima */
+.weatherInfo {
+    opacity: 0;
+    transform: translateY(-10px);
+    animation: fadeIn 0.5s ease-in-out forwards;
 }
 
-.temp {
-    margin: 0; 
-    padding: 0; 
-    background-color: transparent;
+@keyframes fadeIn {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }

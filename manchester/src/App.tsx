@@ -1,6 +1,6 @@
 import './App.css'
 import "@fontsource/montserrat"
-import Footer from './components/Footer'
+// import Footer from './components/Footer'
 import Search from './components/Search'
 
 function App() {
@@ -8,7 +8,7 @@ function App() {
   return (
     <>
       <Search />
-      <Footer />
+      {/* <Footer /> */}
     </>
   )
 }

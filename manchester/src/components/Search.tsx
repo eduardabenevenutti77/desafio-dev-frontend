@@ -2,27 +2,38 @@ import { useState } from "react";
 import styles from "./styles/Search.module.css";
 
 interface HourlyWeather {
-  temp: number;
-  weather: Array<{
-    description: string;
-  }>;
-  pop: number;  // probabilidade de precipitação
+  dt_txt: string;
+  main: { temp: number; humidity: number };  // Incluindo umidade
+  pop: number;
+  weather: Array<{ description: string }>;
+  wind: { speed: number };  // Incluindo a velocidade do vento
 }
 
-
-interface WeatherData {
-  name: string;
-  sys: { country: string };
-  main: { temp: number };
+interface ForecastData {
+  city: { name: string };
+  country: string;
+  lat: number;
+  lon: number;
+  current: {
+    temp: number;
+    humidity: number;
+    wind_speed: number;
+    weather: Array<{ description: string }>;
+  };
+  daily: Array<{
+    temp: { day: number; night: number };
+    weather: Array<{ description: string }>;
+  }>;
   hourly: HourlyWeather[];
 }
 
 export default function Search() {
   const [location, setLocation] = useState("");
-  const [weather, setWeather] = useState<WeatherData | null>(null);
+  const [weather, setWeather] = useState<ForecastData | null>(null);
   const [locationState, setLocationState] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
+  const [temperatureClass, setTemperatureClass] = useState<string>("");
 
   const API_KEY = "377a3172f4ae6ce8b24413e251ef34a5";
 
@@ -42,11 +53,23 @@ export default function Search() {
       const { lat, lon, state: fetchedState, country } = geoData[0];
       setLocationState(fetchedState || country || "");
 
-      const weatherResponse = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${API_KEY}&units=metric&lang=pt`);
-      if (!weatherResponse.ok) throw new Error("Não foi possível obter os dados do clima!");
+      // Requisição para a API One Call
+      const oneCallResponse = await fetch(`https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&appid=${API_KEY}&units=metric&lang=pt`);
+      if (!oneCallResponse.ok) throw new Error("Não foi possível obter os dados da previsão!");
 
-      const weatherData = await weatherResponse.json();
-      setWeather(weatherData);
+      const forecastData: ForecastData = await oneCallResponse.json();
+      setWeather(forecastData);
+
+      // Ajustando a classe de temperatura com base na previsão
+      const temp = forecastData.current.temp;
+      if (temp >= 30) {
+        setTemperatureClass(styles.weatherHot);
+      } else if (temp <= 10) {
+        setTemperatureClass(styles.weatherCold);
+      } else {
+        setTemperatureClass(styles.weatherMild);
+      }
+
     } catch (err: unknown) {
       if (err instanceof Error) {
         setError(err.message);
@@ -66,7 +89,7 @@ export default function Search() {
   };
 
   return (
-    <div className={styles.weatherSearchContainer}>
+    <div className={`${styles.weatherSearchContainer} ${temperatureClass}`}>
       <input
         type="text"
         placeholder="Busque por uma cidade"
@@ -81,19 +104,47 @@ export default function Search() {
 
       {weather && (
         <div className={styles.weatherInfo}>
-          {weather.name && locationState && weather.sys?.country && (
-            <h3>{weather.name}, {locationState}, {weather.sys.country}</h3>
+          {weather.city?.name && locationState && (
+            <h3>{weather.city.name}, {locationState}</h3>
           )}
 
-          {weather.main?.temp && <p className={styles.temp}>🌡️ Temperatura: {Math.round(weather.main.temp)}°C</p>}
+          <p className={styles.temp}>{Math.round(weather.current.temp)}°C</p>
+          <p className={styles.weatherDescription}>{weather.current.weather[0].description}</p>
 
+          {weather.current.humidity !== undefined && (
+            <p className={styles.humidity}>Umidade: {weather.current.humidity}%</p>
+          )}
 
-          {weather.hourly?.[0]?.pop !== undefined && (
-            <p>🌧️ Probabilidade de chuva: {(weather.hourly[0].pop * 100).toFixed(0)}%</p>
+          {weather.current.wind_speed !== undefined && (
+            <p className={styles.wind}>Vento: {weather.current.wind_speed} m/s</p>
+          )}
+
+          {weather.daily && weather.daily.length > 0 && (
+            <div className={styles.dailyForecast}>
+              <h4>Previsão para os próximos dias:</h4>
+              {weather.daily.map((day, index) => (
+                <div key={index} className={styles.dailyDay}>
+                  <p>{Math.round(day.temp.day)}°C / {Math.round(day.temp.night)}°C</p>
+                  <p>{day.weather[0].description}</p>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {weather.hourly && weather.hourly.length > 0 && (
+            <div className={styles.hourlyForecast}>
+              <h4>Previsão horária:</h4>
+              {weather.hourly.slice(0, 6).map((hour, index) => (
+                <div key={index} className={styles.hourlyHour}>
+                  <p>{new Date(hour.dt_txt).toLocaleTimeString()}</p>
+                  <p>{Math.round(hour.main.temp)}°C</p>
+                  <p>{hour.weather[0].description}</p>
+                </div>
+              ))}
+            </div>
           )}
         </div>
       )}
-
     </div>
   );
 }

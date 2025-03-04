@@ -4,7 +4,7 @@
     border-radius: 15px;
     background-color: #94ABBB;
     font-weight: 800;
-    color: rgba(246, 246, 246, 0.6);
+    color: #94ABBB;
     font-size: 16px;
     text-align: center;
 
@@ -14,9 +14,7 @@
     flex-wrap: wrap; 
 }
 
-
 .footer p {
     margin: 0; 
     padding: 0; 
-    /* background-color: transparent; */
 }
