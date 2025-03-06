@@ -91,3 +91,12 @@
     /* background-color: #6a81ac; Cor de fundo mais suave */
     font-family: "Montserrat", sans-serif;
 }
+
+button {
+    border-radius: 4px;
+    width: 100px;
+    height: 25px;
+    border: none;
+    /* gap: 10px; */
+    margin-left: 10px;
+}

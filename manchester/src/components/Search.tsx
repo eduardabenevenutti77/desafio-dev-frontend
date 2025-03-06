@@ -99,10 +99,10 @@ export default function Search() {
 
       {/* Botões para alterar a cor de fundo */}
       <div className={styles.buttonContainer}>
-        <button onClick={() => changeBackgroundColor("#FF5733")}>Cor Quente</button>
+        {/* <button onClick={() => changeBackgroundColor("#FF5733")}>Cor Quente</button> */}
         <button onClick={() => changeBackgroundColor("#5D8AA8")}>Cor Fria</button>
         <button onClick={() => changeBackgroundColor("#F0E68C")}>Cor Amena</button>
-        <button onClick={() => changeBackgroundColor("#ffffff")}>Cor Padrão</button>
+        {/* <button onClick={() => changeBackgroundColor("#ffffff")}>Cor Padrão</button> */}
       </div>
     </div>
   );
