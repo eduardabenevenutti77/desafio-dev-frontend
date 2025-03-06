@@ -1,41 +1,25 @@
 import { useState } from "react";
 import styles from "./styles/Search.module.css";
 
-interface HourlyWeather {
-  dt_txt: string;
-  main: { temp: number; humidity: number };  // Incluindo umidade
-  pop: number;
-  weather: Array<{ description: string }>;
-  wind: { speed: number };  // Incluindo a velocidade do vento
-}
-
 interface ForecastData {
-  city: { name: string };
-  country: string;
-  lat: number;
-  lon: number;
-  current: {
-    temp: number;
-    humidity: number;
-    wind_speed: number;
-    weather: Array<{ description: string }>;
-  };
-  daily: Array<{
-    temp: { day: number; night: number };
+  list: Array<{
+    dt: number;
+    main: { temp: number; humidity: number };
+    wind: { speed: number };
     weather: Array<{ description: string }>;
   }>;
-  hourly: HourlyWeather[];
+  city: {
+    name: string;
+    country: string;
+  };
 }
 
 export default function Search() {
   const [location, setLocation] = useState("");
   const [weather, setWeather] = useState<ForecastData | null>(null);
-  const [locationState, setLocationState] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
-  const [temperatureClass, setTemperatureClass] = useState<string>("");
-
-  const API_KEY = "377a3172f4ae6ce8b24413e251ef34a5";
+  const API_KEY = "377a3172f4ae6ce8b24413e251ef34a5"; // Substitua pela sua chave real
 
   const fetchWeather = async () => {
     if (!location) return;
@@ -44,38 +28,16 @@ export default function Search() {
       setLoading(true);
       setError(null);
 
-      const geoResponse = await fetch(`http://api.openweathermap.org/geo/1.0/direct?q=${location}&limit=1&appid=${API_KEY}`);
-      if (!geoResponse.ok) throw new Error("Não foi possível obter a localização da cidade!");
+      const response = await fetch(
+        `https://api.openweathermap.org/data/2.5/forecast?q=${location}&appid=${API_KEY}&units=metric&lang=pt`
+      );
 
-      const geoData = await geoResponse.json();
-      if (geoData.length === 0) throw new Error("Cidade não encontrada!");
+      if (!response.ok) throw new Error("Erro ao buscar a previsão!");
 
-      const { lat, lon, state: fetchedState, country } = geoData[0];
-      setLocationState(fetchedState || country || "");
-
-      // Requisição para a API One Call
-      const oneCallResponse = await fetch(`https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&appid=${API_KEY}&units=metric&lang=pt`);
-      if (!oneCallResponse.ok) throw new Error("Não foi possível obter os dados da previsão!");
-
-      const forecastData: ForecastData = await oneCallResponse.json();
-      setWeather(forecastData);
-
-      // Ajustando a classe de temperatura com base na previsão
-      const temp = forecastData.current.temp;
-      if (temp >= 30) {
-        setTemperatureClass(styles.weatherHot);
-      } else if (temp <= 10) {
-        setTemperatureClass(styles.weatherCold);
-      } else {
-        setTemperatureClass(styles.weatherMild);
-      }
-
+      const data: ForecastData = await response.json();
+      setWeather(data);
     } catch (err: unknown) {
-      if (err instanceof Error) {
-        setError(err.message);
-      } else {
-        setError("Erro desconhecido");
-      }
+      setError(err instanceof Error ? err.message : "Erro desconhecido");
       setWeather(null);
     } finally {
       setLoading(false);
@@ -88,8 +50,14 @@ export default function Search() {
     }
   };
 
+  // Função para alterar a cor de fundo
+  const changeBackgroundColor = (color: string) => {
+    document.body.style.backgroundColor = color; // Altera a cor de fundo do body
+  };
+
   return (
-    <div className={`${styles.weatherSearchContainer} ${temperatureClass}`}>
+    <div className={styles.weatherSearchContainer}>
+      <p className={styles.nameAplication}>Manchester's Cloud</p>
       <input
         type="text"
         placeholder="Busque por uma cidade"
@@ -104,47 +72,38 @@ export default function Search() {
 
       {weather && (
         <div className={styles.weatherInfo}>
-          {weather.city?.name && locationState && (
-            <h3>{weather.city.name}, {locationState}</h3>
-          )}
+          <h3 className={styles.cityName}>
+            {weather.city.name}, {weather.city.country}
+          </h3>
+          <p className={styles.weatherDescription}>
+            {weather.list[0].weather[0].description}
+          </p>
 
-          <p className={styles.temp}>{Math.round(weather.current.temp)}°C</p>
-          <p className={styles.weatherDescription}>{weather.current.weather[0].description}</p>
+          <p className={styles.temp}>{Math.round(weather.list[0].main.temp)}°C</p>
 
-          {weather.current.humidity !== undefined && (
-            <p className={styles.humidity}>Umidade: {weather.current.humidity}%</p>
-          )}
+          <p className={styles.humidity}>Umidade: {weather.list[0].main.humidity}%</p>
+          <p className={styles.wind}>Vento: {weather.list[0].wind.speed} m/s</p>
 
-          {weather.current.wind_speed !== undefined && (
-            <p className={styles.wind}>Vento: {weather.current.wind_speed} m/s</p>
-          )}
-
-          {weather.daily && weather.daily.length > 0 && (
-            <div className={styles.dailyForecast}>
-              <h4>Previsão para os próximos dias:</h4>
-              {weather.daily.map((day, index) => (
-                <div key={index} className={styles.dailyDay}>
-                  <p>{Math.round(day.temp.day)}°C / {Math.round(day.temp.night)}°C</p>
-                  <p>{day.weather[0].description}</p>
-                </div>
-              ))}
-            </div>
-          )}
-
-          {weather.hourly && weather.hourly.length > 0 && (
-            <div className={styles.hourlyForecast}>
-              <h4>Previsão horária:</h4>
-              {weather.hourly.slice(0, 6).map((hour, index) => (
-                <div key={index} className={styles.hourlyHour}>
-                  <p>{new Date(hour.dt_txt).toLocaleTimeString()}</p>
-                  <p>{Math.round(hour.main.temp)}°C</p>
-                  <p>{hour.weather[0].description}</p>
-                </div>
-              ))}
-            </div>
-          )}
+          <div className={styles.dailyForecast}>
+            <h4 className={styles.titleNextDays}>Previsão para os próximos dias:</h4>
+            {weather.list.slice(0, 5).map((forecast, index) => (
+              <div key={index} className={styles.dailyDay}>
+                <p>{new Date(forecast.dt * 1000).toLocaleDateString()}</p>
+                <p>{Math.round(forecast.main.temp)}°C</p>
+                <p>{forecast.weather[0].description}</p>
+              </div>
+            ))}
+          </div>
         </div>
       )}
+
+      {/* Botões para alterar a cor de fundo */}
+      <div className={styles.buttonContainer}>
+        <button onClick={() => changeBackgroundColor("#FF5733")}>Cor Quente</button>
+        <button onClick={() => changeBackgroundColor("#5D8AA8")}>Cor Fria</button>
+        <button onClick={() => changeBackgroundColor("#F0E68C")}>Cor Amena</button>
+        <button onClick={() => changeBackgroundColor("#ffffff")}>Cor Padrão</button>
+      </div>
     </div>
   );
 }

@@ -3,72 +3,91 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 15px; /* Espaço entre os elementos */
+    gap: 15px;
     padding: 40px 20px;
     border-radius: 10px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+    /* box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);  sombra mais suave */
     max-width: 700px;
     margin: auto;
-    transition: background 0.3s ease; /* Transição suave */
+    transition: background 0.3s ease, color 0.3s ease;
+    color: white;
+    text-align: center;
+    width: 100%;
+    background: transparent; /* Fundo transparente */
 }
 
-/* Fundos para diferentes condições de temperatura */
-.weather-hot {
-    background: linear-gradient(135deg, #FF7E5F, #feb47b); /* Gradiente quente */
-}
-
-.weather-cold {
-    background: linear-gradient(135deg, #00c6ff, #0072ff); /* Gradiente frio */
-}
-
-.weather-mild {
-    background: linear-gradient(135deg, #1E3C72, #2A5298); /* Gradiente suave */
+.nameAplication {
+    font-size: 1.5rem;
+    font-weight: bold;
 }
 
 .input {
-    background-color: rgba(255, 255, 255, 0.2);
-    width: 90%;
-    max-width: 680px;
-    height: 40px;
-    border-radius: 8px;
-    border: none;
     padding: 10px;
-    text-align: center;
+    width: 80%;
+    max-width: 400px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
     font-size: 16px;
-    color: white;
-    outline: none;
-    transition: all 0.3s ease-in-out;
+    color: #ffff;
 }
 
-.input::placeholder {
-    color: rgba(255, 255, 255, 0.6);
+.error {
+    color: red;
+    font-weight: bold;
 }
 
-.input:focus {
-    background-color: rgba(255, 255, 255, 0.3);
-    transform: scale(1.05);
+.loading {
+    font-weight: bold;
+    color: gray;
 }
 
 .weatherInfo {
-    margin-top: 20px;
-    text-align: center;
-    width: 85%;
-    background: rgba(255, 255, 255, 0.1);
+    /* background: rgba(255, 255, 255, 0.1); Transparente com leve fundo */
     padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    text-align: left;
+    width: 100%;
+    max-width: 500px;
 }
 
-/* Efeito de fade-in para a exibição dos dados do clima */
-.weatherInfo {
-    opacity: 0;
-    transform: translateY(-10px);
-    animation: fadeIn 0.5s ease-in-out forwards;
+.temp {
+    font-size: 18px;
+    font-weight:500;
 }
 
-@keyframes fadeIn {
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+.weatherDescription {
+    /* font-style: italic; */
+    font-size:14px ;
+    font-weight: 600;
+    color: #23385e;
+    text-align: center;
+}
+
+.humidity, .wind {
+    font-size: 1rem;
+    margin-top: 5px;
+}
+
+.cityName {
+    font-size: 20px;
+    text-align: center;
+    font-weight: bolder;
+}
+
+.titleNextDays {
+    margin-top: 100px;
+    /* font-style: italic; */
+    text-align: center;
+}
+
+.dailyDay {
+    /* background: rgba(255, 255, 255, 0.15); Transparente com leve fundo */
+    padding: 10px;
+    margin-top: 10px;
+    border-radius: 5px;
+}
+
+* {
+    /* background-color: #6a81ac; Cor de fundo mais suave */
+    font-family: "Montserrat", sans-serif;
 }
