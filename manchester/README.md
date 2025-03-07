@@ -1,4 +1,4 @@
-## Descrição do Projeto (Atualizada)
+## Descrição do Projeto 
 
 O sistema permite buscar informações sobre o clima de diferentes cidades, exibindo dados como temperatura, descrição do clima (exemplo: nublado, entre nuvens, etc.), umidade e velocidade do vento. Ele também oferece as seguintes funcionalidades:
 
