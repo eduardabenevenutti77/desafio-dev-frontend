@@ -43,8 +43,3 @@ O projeto utiliza as seguintes tecnologias e funcionalidades:
 
 - **Armazenamento Local (Local Storage)**: O histórico de buscas e as cidades favoritas são armazenados no local storage do navegador, garantindo que as informações sejam mantidas entre as sessões.
 - **Alternância de Tema**: O sistema tem um modo claro e um modo escuro, com troca de cores de fundo ao clicar no ícone de alternância de tema.
-
-## Referência
-
-Este desafio técnico é baseado no seguinte projeto:
-[https://github.com/1STi/desafio-frontend/](https://github.com/1STi/desafio-frontend/)
