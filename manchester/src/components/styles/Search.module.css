@@ -6,14 +6,13 @@
     gap: 15px;
     padding: 40px 20px;
     border-radius: 10px;
-    /* box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);  sombra mais suave */
     max-width: 700px;
     margin: auto;
     transition: background 0.3s ease, color 0.3s ease;
     color: white;
     text-align: center;
     width: 100%;
-    background: transparent; /* Fundo transparente */
+    background: transparent;
 }
 
 .nameAplication {
@@ -24,11 +23,10 @@
 .input {
     padding: 10px;
     width: 80%;
-    max-width: 400px;
+    max-width: 580px;
     border-radius: 5px;
     border: 1px solid #ccc;
     font-size: 16px;
-    color: #ffff;
 }
 
 .error {
@@ -42,7 +40,6 @@
 }
 
 .weatherInfo {
-    /* background: rgba(255, 255, 255, 0.1); Transparente com leve fundo */
     padding: 20px;
     border-radius: 10px;
     text-align: left;
@@ -52,18 +49,18 @@
 
 .temp {
     font-size: 18px;
-    font-weight:500;
+    font-weight: 500;
 }
 
 .weatherDescription {
-    /* font-style: italic; */
-    font-size:14px ;
+    font-size: 14px;
     font-weight: 600;
     color: #23385e;
     text-align: center;
 }
 
-.humidity, .wind {
+.humidity,
+.wind {
     font-size: 1rem;
     margin-top: 5px;
 }
@@ -76,19 +73,16 @@
 
 .titleNextDays {
     margin-top: 100px;
-    /* font-style: italic; */
     text-align: center;
 }
 
 .dailyDay {
-    /* background: rgba(255, 255, 255, 0.15); Transparente com leve fundo */
     padding: 10px;
     margin-top: 10px;
     border-radius: 5px;
 }
 
 * {
-    /* background-color: #6a81ac; Cor de fundo mais suave */
     font-family: "Montserrat", sans-serif;
 }
 
@@ -97,6 +91,55 @@ button {
     width: 100px;
     height: 25px;
     border: none;
-    /* gap: 10px; */
     margin-left: 10px;
+}
+
+.toggleButton {
+    position: absolute;
+    top: 25px;
+    right: 10px;
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    color: rgb(0, 0, 0);
+    transition: transform 0.2s;
+}
+
+.historyList {
+    list-style-type: none;
+    padding: 0;
+}
+
+.historyItem {
+    cursor: pointer;
+    padding: 8px;
+    border: 1px solid #ddd;
+    margin: 5px 0;
+    border-radius: 4px;
+}
+
+.historyItem:hover {
+    background-color: #36ac94;
+}
+
+.favoriteButton {
+    background: none;
+    border: none;
+    cursor: pointer;
+    margin-left: 10px;
+    padding: 0;
+}
+
+.favoriteButton:hover {
+    color: #ff4c4c;
+}
+
+.favoriteContainer {
+    margin-top: 20px;
+}
+
+.favoriteContainer h4 {
+    font-size: 18px;
+    margin-bottom: 10px;
 }
